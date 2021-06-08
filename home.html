@@ -64,6 +64,22 @@
     }
 /****************************** topic ******************************/
 
+    textarea{
+      background: #ffeac9;
+      width: 600px;
+      height: 250px;
+      margin-bottom: 30px;
+      outline: none;
+      border: none;
+      padding: 10px;
+    }
+
+    .form-group{
+      margin-top: 60px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
     button{
       padding: 5px 20px;
       font-size: 1.5rem;
@@ -106,30 +122,43 @@
         transition: all 0.25s ease;
     }
     
-    .upload-btn-wrapper {
-        padding: 5px 20px;
-        font-size: 1.5rem;
-        cursor: pointer;
-        border: 0px;
-        background: transparent;
-        position: relative;
-        margin: 20px;
-        transition: all 0.25s ease;
-        margin-top: 60px;
-        margin:auto;
-        display:block;
-        margin-bottom: 10px;
-        overflow: hidden;
+    [type="file"] {
+      height: 0;
+      overflow: hidden;
+      width: 0;
     }
-    .upload-btn-wrapper:hover{
+
+    [type="file"] + label {
+      padding: 5px 20px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      border: 0px;
+      background: transparent;
+      position: relative;
+      margin: 20px;
+      transition: all 0.25s ease;
+      margin-top: 60px;
+      margin:auto;
+      display:block;
+      margin-bottom: 10px;
+      border: 1px solid #fff;
+      text-align: center;
+      width: 10%;
+    }
+    .btn-2 {
+        color: #fff;
+        overflow: hidden;
+        border-radius: 30px;
+        box-shadow: 0px -0px 0px 0px rgba(143, 64, 248, 0.5), 0px 0px 0px 0px rgba(39, 200, 255, 0.5);
+    }
+    .btn-2:hover{
         transform: translate(0, -6px);
         box-shadow: 10px -10px 25px 0px rgba(143, 64, 248, 0.5), -10px 10px 25px 0px rgba(39, 200, 255, 0.5);
     }
-    .upload-btn-wrapper:hover::after{
+    .btn-2:hover::after{
         transform: rotate(150deg);
-
     }
-    .upload-btn-wrapper::after{
+    .btn-2::after{
         content: "";
         width: 400px;
         height: 400px;
@@ -141,29 +170,7 @@
         z-index: -1;
         transition: all 0.25s ease;
     }
-    .upload-btn-wrapper input[type=file] {
-        font-size: 100px;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        opacity: 0;
-    }
-    
-/****************************** end lego ******************************/
-
-    .form-group{
-      margin-top: 50px;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    textarea{
-      background: #ffeac9;
-      width: 600px;
-      height: 250px;
-      margin-bottom: 10px;
-    }
-/****************************** end from-group ******************************/
-
+  
   </style>
 
 </head>
@@ -184,18 +191,20 @@
       </header>
   <!--end header-->
     <h2>Check your bibliography  for grammar, commar and punctuation errors</h2>
+
+<!-- ปุ่ม check your text -->
     <div class="form-group">
       <textarea class="form-control" name="text" placeholder="Start writing here..."></textarea>
+      <button class="lego" style="font-size: 14px;" >Check your text</button>
     </div>
-  <!--end div-->
+<!-- ปุ่ม check your text -->
 
-  <button class="lego" style="font-size: 14px;" >Check your text</button>
-  <div class="upload-btn-wrapper">
-    <button class="lego" style="font-size: 14px;">Choose File</button>
-    <input type="file" name="myfile" />
-  </div>
-  <!--end button -->
+<!-- Choose file -->
 
+      <input type="file" id="file"  />
+      <label for="file" class="btn-2" >Choose File</label>
+
+<!-- Choose file -->
     </section>    
 
 </body>
