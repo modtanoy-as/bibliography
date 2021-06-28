@@ -388,3 +388,56 @@ class typefunction():
             return {'text' : ' '.join(self.arry) , 'feedback' : ', '.join(self.msg)}
         else:
             return {'text' : ' '.join(self.arry) }
+        
+        
+    def checkARTICLEHARVARD(self,txt):
+        subject = [txt.strip() for txt in txt.split('.')]
+
+        selectCheck = 'ARTICLEHARVARD'
+
+        for item in subject:
+            if item != '':
+                for key, value in pattern[selectCheck].items():
+                    data = re.search(r""+value+"",item)
+                    if data is not None:
+                        if data.span()[1] > 0:
+                            if len(item) == len(data.group()):
+                                print( key , ' => ' , data.group() , len(item) == len(data.group()) ,  len(item) , len(data.group()))
+                                if key not in self.test:
+                                    if key == 'SamNakPim':
+                                        txtSplit = data.group().split(':')
+                                        self.test['Location'] = txtSplit[0].strip()
+                                        self.test['SamNakPim'] = txtSplit[1].strip()
+                                    else:
+                                        if key == 'Name':
+                                            if re.search(r""+pattern[selectCheck]['editor']+"",item) is None:
+                                                self.test[key] = data.group() 
+
+                                        elif key == 'editor':
+                                            txtSplit = data.group().split('.')
+                                            # print(len(txtSplit))
+                                            self.test['Book'] = txtSplit[len(txtSplit)-1].strip()
+                                            self.test['editor'] = txtSplit[0] if len(txtSplit) <= 2 else '.'.join([name.strip( ) for name in txtSplit[:-1]])
+                                            print('editor => ' ,  self.test['editor'])
+                                        else:
+                                            print( key , ' => ' , data.group())
+                                            self.test[key] = data.group()
+
+        for key, value in pattern[selectCheck].items():
+            try:
+                txt = self.test[key]
+                if key == 'Location':
+                    txt = txt+':'
+                elif  key == 'editor':
+                    txt = txt+'.'
+                else:
+                    txt = txt+'.'
+                self.arry.append(txt)
+            except:
+                if key in self.alertMsg:
+                    self.msg.append(self.alertMsg[key])
+
+        if len(self.msg) >0:
+            return {'text' : ' '.join(self.arry) , 'feedback' : ', '.join(self.msg)}
+        else:
+            return {'text' : ' '.join(self.arry) }
