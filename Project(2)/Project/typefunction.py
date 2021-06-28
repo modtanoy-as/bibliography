@@ -338,3 +338,44 @@ class typefunction():
             return {'text' : ' '.join(self.arry) , 'feedback' : ', '.join(self.msg)}
         else:
             return {'text' : ' '.join(self.arry) }
+    def checkTHESISHARVARD(self,txt):
+        subject = [txt.strip() for txt in txt.split('.')]
+        selectCheck = 'THESISHARVARD'
+
+        if re.search(r""+pattern[selectCheck]['magazine']+"",txt) is not None:
+            self.test['magazine'] = re.search(r""+pattern[selectCheck]['magazine']+"",txt).group().replace(',','')
+        if re.search(r""+pattern[selectCheck]['numyear']+"",txt) is not None:
+            self.test['numyear'] = re.search(r""+pattern[selectCheck]['numyear']+"",txt).group()
+        if re.search(r""+pattern[selectCheck]['page']+"",txt) is not None:
+            self.test['page'] = re.search(r""+pattern[selectCheck]['page']+"",txt).group()
+
+
+        for item in subject:
+            if item != '':
+                for key, value in pattern[selectCheck].items():
+                    data = re.search(r""+value+"",item)
+                    if data is not None:
+                        if data.span()[1] > 0:
+                            if len(item) == len(data.group()):
+                                # print( key , ' => ' , data.group() , len(item) == len(data.group()) ,  len(item) , len(data.group()))
+                                if key not in self.test:
+                                    self.test[key] = data.group()
+
+        for key, value in pattern[selectCheck].items():
+            try:
+                txt = self.test[key]
+                if key == 'Location':
+                    txt = txt+':'
+                elif  key == 'magazine' or key == 'numyear':
+                    txt = txt+','
+                else:
+                    txt = txt+'.'
+                self.arry.append(txt)
+            except:
+                if key in self.alertMsg:
+                    self.msg.append(self.alertMsg[key])
+
+        if len(self.msg) >0:
+            return {'text' : ' '.join(self.arry) , 'feedback' : ', '.join(self.msg)}
+        else:
+            return {'text' : ' '.join(self.arry) }
