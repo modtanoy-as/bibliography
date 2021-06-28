@@ -24,6 +24,8 @@ async def checkFormat(txt:str,mode:int):
         result =  typefn.checkWIKI(txt)
     elif mode == 7:
         result =  typefn.checkPERIODICAL(txt)
+    elif mode == 8:
+        result =  typefn.checkTHESISHARVARD(txt)
     return result
     
   

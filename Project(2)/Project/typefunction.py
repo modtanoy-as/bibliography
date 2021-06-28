@@ -338,18 +338,10 @@ class typefunction():
             return {'text' : ' '.join(self.arry) , 'feedback' : ', '.join(self.msg)}
         else:
             return {'text' : ' '.join(self.arry) }
+    
     def checkTHESISHARVARD(self,txt):
         subject = [txt.strip() for txt in txt.split('.')]
         selectCheck = 'THESISHARVARD'
-
-        if re.search(r""+pattern[selectCheck]['magazine']+"",txt) is not None:
-            self.test['magazine'] = re.search(r""+pattern[selectCheck]['magazine']+"",txt).group().replace(',','')
-        if re.search(r""+pattern[selectCheck]['numyear']+"",txt) is not None:
-            self.test['numyear'] = re.search(r""+pattern[selectCheck]['numyear']+"",txt).group()
-        if re.search(r""+pattern[selectCheck]['page']+"",txt) is not None:
-            self.test['page'] = re.search(r""+pattern[selectCheck]['page']+"",txt).group()
-
-
         for item in subject:
             if item != '':
                 for key, value in pattern[selectCheck].items():
@@ -360,6 +352,23 @@ class typefunction():
                                 # print( key , ' => ' , data.group() , len(item) == len(data.group()) ,  len(item) , len(data.group()))
                                 if key not in self.test:
                                     self.test[key] = data.group()
+
+                            if ',' in item:
+                                splitText = item.split(',')
+                                for text in splitText:
+                                    if re.search(r""+pattern[selectCheck]['magazine']+"",text) is not None:
+                                        result = re.search(r""+pattern[selectCheck]['magazine']+"",text).group()
+                                        if len(result) == len(text):
+                                            self.test['magazine'] = result 
+                                    if re.search(r""+pattern[selectCheck]['numyear']+"",text) is not None:
+                                        result = self.test['numyear'] = re.search(r""+pattern[selectCheck]['numyear']+"",text).group()
+                                        if len(result) == len(text):
+                                            self.test['magazine'] = result 
+                                    if re.search(r""+pattern[selectCheck]['page']+"",text) is not None:
+                                        result = self.test['page'] = re.search(r""+pattern[selectCheck]['page']+"",text).group()
+                                        if len(result) == len(text):
+                                            self.test['magazine'] = result 
+                                        
 
         for key, value in pattern[selectCheck].items():
             try:
