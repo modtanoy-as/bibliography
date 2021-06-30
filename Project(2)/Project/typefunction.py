@@ -756,3 +756,45 @@ class typefunction():
             return {'text' : ' '.join(self.arry) }
 
     
+    def checkINTERNET(self,txt):
+        subject = [txt.strip() for txt in txt.split('.')]
+        selectCheck = 'INTERNET'
+
+        if re.search(r""+pattern[selectCheck]['year']+"",txt) is not None:
+            self.test['year'] = re.search(r""+pattern[selectCheck]['year']+"",txt).group().replace(';','')
+        if re.search(r""+pattern[selectCheck]['numyear']+"",txt) is not None:
+            self.test['numyear'] = re.search(r""+pattern[selectCheck]['numyear']+"",txt).group().replace(':','')
+        if re.search(r""+pattern[selectCheck]['url']+"",txt) is not None:
+            self.test['url'] = re.search(r""+pattern[selectCheck]['url']+"",txt).group()
+
+        for item in subject:
+            if item != '':
+                for key, value in pattern[selectCheck].items():
+                    data = re.search(r""+value+"",item)
+                    if data is not None:
+                        if data.span()[1] > 0:
+                            if len(item) == len(data.group()):
+                                if key not in self.test:
+                                    self.test[key] = data.group()
+        print(self.test)
+        for key, value in pattern[selectCheck].items():
+            try:
+                txt = self.test[key]
+                if key == 'numyear':
+                    txt = txt+':'
+                elif  key == 'year' :
+                    txt = txt+';'
+                else:
+                    txt = txt+'.'
+            except:
+                if key in self.alertMsg:
+                    if 'url' in  self.test:
+                        if 'เข้าถึงได้จาก' in self.test['url']:
+                            self.msg.append(self.alertMsg[key])
+                    else:
+                        self.msg.append(self.alertMsg[key])                   
+
+        if len(self.msg) >0:
+            return {'text' : ' '.join(self.arry) , 'feedback' : ', '.join(self.msg)}
+        else:
+            return {'text' : ' '.join(self.arry) }
