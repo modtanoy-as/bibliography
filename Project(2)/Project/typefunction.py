@@ -406,7 +406,7 @@ class typefunction():
                                     self.test[key] = data.group()
 
                             if ',' in item:
-                                splitText = item.split(',')
+                                splitText = [txt.strip() for txt in item.split(',')]
                                 for text in splitText:
                                     if re.search(r""+pattern[selectCheck]['magazine']+"",text) is not None:
                                         result = re.search(r""+pattern[selectCheck]['magazine']+"",text).group()
@@ -618,56 +618,66 @@ class typefunction():
         else:
             return {'text' : ' '.join(self.arry) }
 
-    # def checkTHESISHARVARD(self,txt):
-    #     subject = [txt.strip() for txt in txt.split('.')]
-    #     selectCheck = 'THESISHARVARD'
+    def checkTHESISHARVARD(self,txt):
+        subject = [txt.strip() for txt in txt.split('.')]
+        selectCheck = 'THESISHARVARD'
 
-    #     for item in subject:
-    #         if item != '':
-    #             for key, value in pattern[selectCheck].items():
-    #                 data = re.search(r""+value+"",item)
-    #                 if data is not None:
-    #                     if data.span()[1] > 0:
-    #                         if len(item) == len(data.group()):
-    #                             if key not in self.test:
-    #                                 if key == 'SamNakPim':
-    #                                     txtSplit = data.group().split(':')
-    #                                     self.test['Location'] = txtSplit[0].strip()
-    #                                     self.test['SamNakPim'] = txtSplit[1].strip()
-    #                                 else:
-    #                                     if key == 'Name':
-    #                                         self.test[key] = data.group() 
-    #                                     else:
-    #                                         print( key , ' => ' , data.group())
-    #                                         self.test[key] = data.group()
+        for item in subject:
+            if item != '':
+                for key, value in pattern[selectCheck].items():
+                    data = re.search(r""+value+"",item)
+                    if data is not None:
+                        if data.span()[1] > 0:
+                            if len(item) == len(data.group()):
+                                if key not in self.test:
+                                    if key == 'SamNakPim':
+                                        txtSplit = data.group().split(':')
+                                        self.test['Location'] = txtSplit[0].strip()
+                                        self.test['SamNakPim'] = txtSplit[1].strip()
+                                    else:
+                                        if key == 'Name':
+                                            self.test[key] = data.group() 
+                                        else:
+                                            print( key , ' => ' , data.group())
+                                            self.test[key] = data.group()
 
-    #                         if ',' in item:
-    #                             splitText = item.split(',')
-    #                             for text in splitText:
-    #                                 if re.search(r""+pattern[selectCheck]['degree']+"",text) is not None:
-    #                                     result = re.search(r""+pattern[selectCheck]['degree']+"",text).group()
-                                        
-    #                                 if re.search(r""+pattern[selectCheck]['uni']+"",text) is not None:
-    #                                     result = self.test['uni'] = re.search(r""+pattern[selectCheck]['uni']+"",text).group()
-                    
-    #     for key, value in pattern[selectCheck].items():
-    #         try:
-    #             txt = self.test[key]
-    #             if key == 'Location':
-    #                 txt = txt+':'
-    #             elif  key == 'degree' or key == 'uni':
-    #                 txt = txt+','
-    #             else:
-    #                 txt = txt+'.'
-    #             self.arry.append(txt)
-    #         except:
-    #             if key in self.alertMsg:
-    #                 self.msg.append(self.alertMsg[key])
+                            if ',' in item:
+                                splitText = [txt.strip() for txt in item.split(',')]
+                                for text in splitText:
+                                    if re.search(r""+pattern[selectCheck]['degree']+"",text) is not None:
+                                        result = re.search(r""+pattern[selectCheck]['degree']+"",text).group()
+                                        if len(result) == len(text):
+                                            self.test['degree'] = result 
+                                    if re.search(r""+pattern[selectCheck]['uni']+"",text) is not None:
+                                        result = re.search(r""+pattern[selectCheck]['uni']+"",text).group()
+                                        if len(result) == len(text):
+                                            self.test['uni'] = result 
+                                    if re.search(r""+pattern[selectCheck]['SamNakPim']+"",text) is not None:
+                                        result = re.search(r""+pattern[selectCheck]['SamNakPim']+"",text).group()
+                                        if len(result) == len(text):
+                                            txtSplit = result.split(':')
+                                            self.test['Location'] = txtSplit[0].strip()
+                                            self.test['SamNakPim'] = txtSplit[1].strip()
 
-    #     if len(self.msg) >0:
-    #         return {'text' : ' '.join(self.arry) , 'feedback' : ', '.join(self.msg)}
-    #     else:
-    #         return {'text' : ' '.join(self.arry) }
+                                    
+        for key, value in pattern[selectCheck].items():
+            try:
+                txt = self.test[key]
+                if key == 'Location':
+                    txt = txt+':'
+                elif  key == 'degree' or key == 'uni':
+                    txt = txt+','
+                else:
+                    txt = txt+'.'
+                self.arry.append(txt)
+            except:
+                if key in self.alertMsg:
+                    self.msg.append(self.alertMsg[key])
+
+        if len(self.msg) >0:
+            return {'text' : ' '.join(self.arry) , 'feedback' : ', '.join(self.msg)}
+        else:
+            return {'text' : ' '.join(self.arry) }
 
 
 # Vancouver
