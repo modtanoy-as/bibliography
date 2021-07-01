@@ -42,6 +42,8 @@ async def checkFormat(txt:str,mode:int):
         result =  typefn.checkJOURNALARTICLES(txt)
     elif mode == 16:
         result =  typefn.checkBOOKVANCOUVER(txt)
+    elif mode == 17:
+        result =  typefn.checkINTERNET(txt)
     return result
     
   

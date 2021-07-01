@@ -760,10 +760,14 @@ class typefunction():
         subject = [txt.strip() for txt in txt.split('.')]
         selectCheck = 'INTERNET'
 
+        if re.search(r""+pattern[selectCheck]['access']+"",txt) is not None:
+            self.test['access'] = re.search(r""+pattern[selectCheck]['access']+"",txt).group().replace(';','')
         if re.search(r""+pattern[selectCheck]['year']+"",txt) is not None:
             self.test['year'] = re.search(r""+pattern[selectCheck]['year']+"",txt).group().replace(';','')
         if re.search(r""+pattern[selectCheck]['numyear']+"",txt) is not None:
             self.test['numyear'] = re.search(r""+pattern[selectCheck]['numyear']+"",txt).group().replace(':','')
+        if re.search(r""+pattern[selectCheck]['page']+"",txt) is not None:
+            self.test['page'] = re.search(r""+pattern[selectCheck]['page']+"",txt).group().replace(':','')
         if re.search(r""+pattern[selectCheck]['url']+"",txt) is not None:
             self.test['url'] = re.search(r""+pattern[selectCheck]['url']+"",txt).group()
 
@@ -774,9 +778,9 @@ class typefunction():
                     if data is not None:
                         if data.span()[1] > 0:
                             if len(item) == len(data.group()):
+                                print( key , ' => ' , data.group() , len(item) == len(data.group()) ,  len(item) , len(data.group()))
                                 if key not in self.test:
                                     self.test[key] = data.group()
-        print(self.test)
         for key, value in pattern[selectCheck].items():
             try:
                 txt = self.test[key]
@@ -784,8 +788,11 @@ class typefunction():
                     txt = txt+':'
                 elif  key == 'year' :
                     txt = txt+';'
+                elif  key == 'url' :
+                    txt = txt+' '
                 else:
                     txt = txt+'.'
+                self.arry.append(txt)
             except:
                 if key in self.alertMsg:
                     if 'url' in  self.test:
